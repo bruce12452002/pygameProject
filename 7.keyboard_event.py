@@ -19,6 +19,7 @@ while True:
             print("鍵盤按下", e.key)
 
             try:
+                # chr() ord() 可將數字和字元轉換
                 print("按下的按鍵=", chr(e.key))  # chr 只支援到 0x110000，也就是 1048576，2 ** 20
                 text = font.render(chr(e.key), True, (0, 0, 255))
 
