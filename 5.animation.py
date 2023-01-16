@@ -8,7 +8,6 @@ w = pg.display.set_mode(size=(game_width, game_height))
 background_color = (255, 255, 255)
 w.fill(background_color)
 pg.display.set_caption("動畫")
-pg.display.flip()
 
 
 def old_ball():
@@ -31,10 +30,7 @@ while True:
     old_ball()  # 每次改動就將原本的圖變成和背景色一樣，也就是將圖變不見
     h += step
 
-    if h >= game_height:
-        step *= -1
-
-    if h == 0:
+    if h >= game_height or h == 0:
         step *= -1
 
     new_ball()
