@@ -21,6 +21,15 @@ lr_move = 0  # 左右移動
 ud_move = 0  # 上下移動
 step = 1
 
+
+def change_tank(lr, ud, pic):
+    global is_move, lr_move, ud_move, tank_pic
+    is_move = True
+    lr_move = lr
+    ud_move = ud
+    tank_pic = pic
+
+
 while True:
     if is_move:  # 寫在這才會按著不放還能繼續動
         w.fill((0, 0, 0))
@@ -45,26 +54,15 @@ while True:
 
     for e in pg.event.get():
         if e.type == pg.KEYDOWN:
-            if e.key == 119 or e.key == 1073741906:  # w 或上鍵
-                is_move = True
-                lr_move = 0
-                ud_move = step * -1
-                tank_pic = up
-            elif e.key == 115 or e.key == 1073741905:  # s 或下鍵
-                is_move = True
-                lr_move = 0
-                ud_move = step
-                tank_pic = down
-            elif e.key == 97 or e.key == 1073741904:  # a 或左鍵
-                is_move = True
-                lr_move = step * -1
-                ud_move = 0
-                tank_pic = left
-            elif e.key == 100 or e.key == 1073741903:  # d 或右鍵
-                is_move = True
-                lr_move = step
-                ud_move = 0
-                tank_pic = right
+            match e.key:
+                case 119 | 1073741906:  # w 或上鍵
+                    change_tank(0, step * -1, up)
+                case 115 | 1073741905:  # s 或下鍵
+                    change_tank(0, step, down)
+                case 97 | 1073741904:  # a 或左鍵
+                    change_tank(step * -1, 0, left)
+                case 100 | 1073741903:  # d 或右鍵
+                    change_tank(step, 0, right)
         elif e.type == pg.KEYUP:
             is_move = False
         elif e.type == pg.QUIT:
