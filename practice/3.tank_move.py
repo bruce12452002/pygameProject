@@ -55,13 +55,22 @@ while True:
     for e in pg.event.get():
         if e.type == pg.KEYDOWN:
             match e.key:
-                case 119 | 1073741906:  # w 或上鍵
+                # case 119 | 1073741906:  # w 或上鍵
+                #     change_tank(0, step * -1, up)
+                # case 115 | 1073741905:  # s 或下鍵
+                #     change_tank(0, step, down)
+                # case 97 | 1073741904:  # a 或左鍵
+                #     change_tank(step * -1, 0, left)
+                # case 100 | 1073741903:  # d 或右鍵
+
+                case pg.K_w | pg.K_UP:  # w 或上鍵
                     change_tank(0, step * -1, up)
-                case 115 | 1073741905:  # s 或下鍵
+                case pg.K_s | pg.K_DOWN:  # s 或下鍵
                     change_tank(0, step, down)
-                case 97 | 1073741904:  # a 或左鍵
+                case pg.K_a | pg.K_LEFT:  # a 或左鍵
                     change_tank(step * -1, 0, left)
-                case 100 | 1073741903:  # d 或右鍵
+                case pg.K_d | pg.K_RIGHT:  # d 或右鍵
+
                     change_tank(step, 0, right)
         elif e.type == pg.KEYUP:
             is_move = False
