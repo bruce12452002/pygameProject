@@ -3,7 +3,7 @@ import pygame as pg
 pg.init()
 game_width = 800
 game_height = 600
-w = pg.display.set_mode((game_width, game_height))
+w = pg.display.set_mode([game_width, game_height])
 pg.display.set_caption("自訂按鈕")
 font = pg.font.SysFont("Impact", 25)
 

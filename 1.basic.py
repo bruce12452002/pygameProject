@@ -5,7 +5,7 @@ import pygame as pg
 
 pg.init()
 
-game_width_height = (800, 600)
+game_width_height = [800, 600]
 '''　flags 參數：
 pg.FULLSCREEN
 pg.RESIZABLE

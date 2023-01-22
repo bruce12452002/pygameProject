@@ -2,7 +2,7 @@ import pygame as pg
 
 pg.init()
 
-game_width_height = (800, 600)
+game_width_height = [800, 600]
 w = pg.display.set_mode(size=game_width_height)
 # print(type(w))  # <class 'pygame.Surface'>
 pg.display.set_caption("圖片")

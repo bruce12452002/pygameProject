@@ -4,7 +4,7 @@ pg.init()
 
 game_width = 800
 game_height = 600
-w = pg.display.set_mode(size=(game_width, game_height))
+w = pg.display.set_mode(size=[game_width, game_height])
 pg.display.set_caption("鍵盤事件")
 font = pg.font.SysFont("Herculanum", 40, bold=False, italic=False)
 word = 0
