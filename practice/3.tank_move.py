@@ -62,6 +62,7 @@ while True:
                 # case 97 | 1073741904:  # a 或左鍵
                 #     change_tank(step * -1, 0, left)
                 # case 100 | 1073741903:  # d 或右鍵
+                #       change_tank(step, 0, right)
 
                 case pg.K_w | pg.K_UP:  # w 或上鍵
                     change_tank(0, step * -1, up)
@@ -70,7 +71,6 @@ while True:
                 case pg.K_a | pg.K_LEFT:  # a 或左鍵
                     change_tank(step * -1, 0, left)
                 case pg.K_d | pg.K_RIGHT:  # d 或右鍵
-
                     change_tank(step, 0, right)
         elif e.type == pg.KEYUP:
             is_move = False
