@@ -7,7 +7,8 @@ w = pg.display.set_mode(size=game_width_height)
 pg.display.set_caption("文字")
 
 # Font(路徑, 大小)
-font = pg.font.SysFont("Herculanum", 25, bold=False, italic=True)  # Impact
+print(pg.font.get_fonts())  # 查看所有可用的字體
+font = pg.font.SysFont("Herculanum", 25, bold=False, italic=True)  # 字體，大小，粗體，斜體
 # font = pg.font.Font("xxx.ttf", 25)
 
 # render(文字, 是否平滑, 顏色, 背景色（預色透明）)
