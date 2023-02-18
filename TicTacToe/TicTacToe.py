@@ -10,6 +10,14 @@ pg.display.set_caption("井字遊戲")
 BG_COLOR = (100, 100, 100)
 w.fill(BG_COLOR)
 
+# 背景音樂
+pg.mixer.music.load("../music/fukakukuraiido.mp3")
+pg.mixer.music.play(-1)
+
+# 音效
+p1s = pg.mixer.Sound("../sound/sh_pickup01.mp3")
+p2s = pg.mixer.Sound("../sound/sh_pickup02.mp3")
+
 PAD = 3  # 3*3，格子數
 board = np.zeros((PAD, PAD))  # 產生 3*3 二維陣列
 AVG_PAD = WH // 3  # 每一個格子的平均數
@@ -147,26 +155,33 @@ while True:
     for e in pg.event.get():
         if e.type == pg.QUIT:
             exit()
-        elif e.type == pg.MOUSEBUTTONDOWN and not game_over:
+        elif e.type == pg.MOUSEBUTTONUP and game_over:
+            restart()
+        elif e.type == pg.MOUSEBUTTONUP and not game_over:
             mouseX = e.pos[0]
             mouseY = e.pos[1]
             # print(mouseX, mouseY)
-            clicked_col = int(mouseX // AVG_PAD)
+
+            # 寬高互換 -->「滑鼠高 // 螢幕寬」和「滑鼠寬 // 螢幕高」 會對上 array
             clicked_row = int(mouseY // AVG_PAD)
+            clicked_col = int(mouseX // AVG_PAD)
             # print(clicked_row, clicked_col)
 
             if available_square(clicked_row, clicked_col):
                 if player == 1:
                     mark_square(clicked_row, clicked_col, player)
+                    p1s.play()
                     check_winner(player)
                     player = 2
                 elif player == 2:
                     mark_square(clicked_row, clicked_col, player)
+                    p2s.play()
                     check_winner(player)
                     player = 1
                 # print(board)
                 draw_figures()
                 pg.display.update()
+
         if e.type == pg.KEYDOWN:
             if e.key == pg.K_r:
                 restart()

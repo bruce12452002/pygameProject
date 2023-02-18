@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame as pg
@@ -9,10 +10,19 @@ w = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("打飛機")
 pg.display.set_icon(pg.image.load("../images/airplane.png"))
 PLAYER_STEP = 50
-# MONSTER_STEP = 3
+score = 0  # 玩家分數
+# game_over = False
 
 # 背景圖
 background_picture = pg.transform.scale(pg.image.load("background.jpeg"), (WIDTH, HEIGHT))
+
+# 背景音樂
+pg.mixer.music.load("../music/bacteria.mp3")
+pg.mixer.music.play(-1)
+
+# 音效
+bomb = pg.mixer.Sound("../sound/bomb.mp3")  # 敵人死掉的爆炸聲
+ju = pg.mixer.Sound("../sound/laser.mp3")  # 子彈發出的音效
 
 # 畫飛機
 airplane = pg.image.load("../images/airplane.png")
@@ -32,12 +42,47 @@ monster7 = pg.transform.rotozoom(pg.image.load("../images/m7.png"), 0, zoom)
 monster8 = pg.transform.rotozoom(pg.image.load("../images/m8.png"), 0, zoom)
 
 
+def show_score():
+    font = pg.font.SysFont("applesdgothicneo", 25)
+    text = font.render(f"分數：{score}", True, (0, 255, 0))
+    w.blit(text, (0, 0))
+
+
+class Bullet:
+    def __init__(self):
+        self.img = pg.transform.rotozoom(pg.image.load("../images/bullet.png"), 0, 0.2)
+        self.x = airplane_pos_x + airplane_width // 2 - self.img.get_width() // 2
+        self.y = airplane_pos_y + 10
+        self.step = 10  # 子彈速度
+
+    def hit(self):
+        global score
+        for m in monsters:
+            if distance(self.x, self.y, m.x, m.y) < 30:
+                bomb.play()
+                for bs in bullets:
+                    if bs == self:
+                        bullets.remove(self)
+                m.reset()
+                score += 1
+
+
+bullets = []
+
+
 class Monster:
+    h = 20  # 初始化時，怪物比較下面，之後生成怪物就要高一點
+
     def __init__(self):
         self.img = random.sample([monster1, monster2, monster3, monster4, monster5, monster6, monster7, monster8], 1)[0]
+        # self.height = self.img.get_height()
         self.x = random.randint(0, WIDTH - self.img.get_width())
-        self.y = random.randint(0, HEIGHT // 3)
+        self.y = random.randint(0, HEIGHT // 3 + self.h)
         self.step = random.uniform(2, 3)
+
+    def reset(self):
+        self.x = random.randint(0, WIDTH - self.img.get_width())
+        self.y = random.randint(0, HEIGHT // 3 - self.h)
 
 
 monsters = []
@@ -45,7 +90,17 @@ for i in range(10):
     monsters.append(Monster())
 
 
+def show_bullets():
+    for b in bullets:
+        w.blit(b.img, (b.x, b.y))
+        b.hit()
+        b.y -= b.step
+        if b.y < 0:
+            bullets.remove(b)
+
+
 def show_monster():
+    global game_over
     for m in monsters:
         w.blit(m.img, (m.x, m.y))
         m.x += m.step
@@ -53,6 +108,21 @@ def show_monster():
         if 0 > m.x or m.x > WIDTH - m.img.get_width():
             m.step *= -1
             m.y += 30
+            if m.y + m.img.get_height() > HEIGHT - airplane_height:
+                # game_over = True
+                monsters.clear()  # 遊戲結束，清空怪物
+
+
+def show_game_over():
+    font = pg.font.SysFont("applesdgothicneo", 64)
+    text = font.render("Game Over", True, (255, 0, 0))
+    w.blit(text, (WIDTH // 3, HEIGHT // 3))
+
+
+def distance(bullet_x, bullet_y, monster_x, monster_y):
+    x = bullet_x - monster_x
+    y = bullet_y - monster_y
+    return math.sqrt(x ** 2 + y ** 2)
 
 
 while True:
@@ -66,9 +136,13 @@ while True:
             elif e.key == pg.K_RIGHT:
                 if airplane_pos_x <= WIDTH - airplane_width:
                     airplane_pos_x += PLAYER_STEP
+            elif e.key == pg.K_SPACE:
+                bullets.append(Bullet())
+                ju.play()
 
     w.blit(background_picture, (0, 0))
     show_monster()
+    show_bullets()
     w.blit(airplane, (airplane_pos_x, airplane_pos_y))
-
+    show_score()
     pg.display.update()
