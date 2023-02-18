@@ -44,7 +44,7 @@ monster8 = pg.transform.rotozoom(pg.image.load("../images/m8.png"), 0, zoom)
 
 def show_score():
     font = pg.font.SysFont("applesdgothicneo", 25)
-    text = font.render(f"分數：{score}", True, (0, 255, 0))
+    text = font.render(f"Score：{score}", True, (0, 255, 0))
     w.blit(text, (0, 0))
 
 

@@ -129,6 +129,7 @@ def is_board_full():
         for col in range(PAD):
             if board[row][col] == 0:
                 return False
+    turn_game_over()
     return True
 
 
@@ -155,8 +156,6 @@ while True:
     for e in pg.event.get():
         if e.type == pg.QUIT:
             exit()
-        elif e.type == pg.MOUSEBUTTONUP and game_over:
-            restart()
         elif e.type == pg.MOUSEBUTTONUP and not game_over:
             mouseX = e.pos[0]
             mouseY = e.pos[1]
@@ -180,8 +179,10 @@ while True:
                     player = 1
                 # print(board)
                 draw_figures()
+                is_board_full()
                 pg.display.update()
-
+        elif e.type == pg.MOUSEBUTTONUP and game_over:
+            restart()
         if e.type == pg.KEYDOWN:
-            if e.key == pg.K_r:
+            if e.key == pg.K_r:  # 有可能 Caps Lock 造成失效
                 restart()
