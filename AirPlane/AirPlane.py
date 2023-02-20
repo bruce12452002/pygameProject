@@ -43,8 +43,8 @@ monster8 = pg.transform.rotozoom(pg.image.load("../images/m8.png"), 0, zoom)
 
 
 def show_score():
-    font = pg.font.SysFont("applesdgothicneo", 25)
-    text = font.render(f"Score：{score}", True, (0, 255, 0))
+    font = pg.font.SysFont("applesdgothicneo", 45)
+    text = font.render(f"score：{score}", True, (0, 255, 0))
     w.blit(text, (0, 0))
 
 
@@ -60,9 +60,7 @@ class Bullet:
         for m in monsters:
             if distance(self.x, self.y, m.x, m.y) < 30:
                 bomb.play()
-                for bs in bullets:
-                    if bs == self:
-                        bullets.remove(self)
+                remove_bullet(self)
                 m.reset()
                 score += 1
 
@@ -96,6 +94,12 @@ def show_bullets():
         b.hit()
         b.y -= b.step
         if b.y < 0:
+            remove_bullet(b)
+
+
+def remove_bullet(b: Bullet):
+    for bs in bullets:
+        if bs == b:
             bullets.remove(b)
 
 
